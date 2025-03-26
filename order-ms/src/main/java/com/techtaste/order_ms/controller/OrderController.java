@@ -17,6 +17,9 @@ import com.techtaste.order_ms.dto.OrderRequestDTO;
 import com.techtaste.order_ms.dto.OrderResponseDTO;
 import com.techtaste.order_ms.service.OrderService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -25,8 +28,10 @@ public class OrderController {
     private OrderService service;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody OrderRequestDTO orderDTO, UriComponentsBuilder uriBuilder) {
-        OrderResponseDTO order = service.createOrder(orderDTO);
+    @CircuitBreaker(name="verifyAuthorization", fallbackMethod = "orderRegisterError")
+    public ResponseEntity<OrderResponseDTO> createOrder(
+            @RequestBody @Valid OrderRequestDTO orderDTO, UriComponentsBuilder uriBuilder) {
+        OrderResponseDTO order = service.createOrder(orderDTO, false);
         URI uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.id()).toUri();
         return ResponseEntity.created(uri).body(order);
     }
@@ -39,5 +44,12 @@ public class OrderController {
     @GetMapping("/port")
     public ResponseEntity<String> getPort(@Value("${local.server.port}") String port) {
         return ResponseEntity.ok().body(String.format("Response from Order Service running on port %s", port));
+    }
+
+    public ResponseEntity<OrderResponseDTO> orderRegisterError(
+            @RequestBody @Valid OrderRequestDTO orderDTO, UriComponentsBuilder uriBuilder, Exception e) {
+        OrderResponseDTO order = service.createOrder(orderDTO, true);
+        URI uri = uriBuilder.path("/orders/{id}").buildAndExpand(order.id()).toUri();
+        return ResponseEntity.created(uri).body(order);
     }
 }
