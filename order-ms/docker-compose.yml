@@ -1,0 +1,16 @@
+volumes:
+  postgres_data:
+
+services:
+  db:
+    container_name: techtaste-order-db
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data

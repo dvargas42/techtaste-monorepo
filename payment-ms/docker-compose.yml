@@ -1,0 +1,16 @@
+volumes:
+  postgres-data:
+
+services:
+  db:
+    container_name: techtaste-payment-db
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5431:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
