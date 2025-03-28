@@ -22,9 +22,9 @@ public class EmailService {
 
     public void sendEmail(String to, String subject, String content) {
         SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom(content);
+        email.setFrom(from.trim());
         email.setSubject(subject);
-        email.setTo(to);
+        email.setTo(to.trim());
         email.setText(content);
         try {
             emailSender.send(email);
