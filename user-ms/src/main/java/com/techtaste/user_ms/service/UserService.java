@@ -43,8 +43,9 @@ public class UserService {
         if (user.isPresent()) {
             emailService.sendEmail(
                 user.get().getEmail(), 
-                "Order status " + message.orderId(),
-                "Order is: " + message.status());
+                "Order status " + message.status(),
+                "Order is: " + message.orderId()
+            );
         }
     }
 }
