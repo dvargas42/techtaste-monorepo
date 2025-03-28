@@ -33,9 +33,9 @@ public class EmailConfig {
         service.sendMessage(message);
     }
 
+    @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         ObjectMapper objectMapper = new ObjectMapper();
         return new Jackson2JsonMessageConverter(objectMapper);
     }
-    
 }
