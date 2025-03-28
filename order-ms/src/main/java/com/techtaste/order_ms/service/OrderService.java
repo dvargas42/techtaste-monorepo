@@ -8,11 +8,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.techtaste.order_ms.dto.AuthorizationDTO;
+import com.techtaste.order_ms.dto.MessageDTO;
 import com.techtaste.order_ms.dto.OrderRequestDTO;
 import com.techtaste.order_ms.dto.OrderResponseDTO;
 import com.techtaste.order_ms.enums.Status;
 import com.techtaste.order_ms.http.AuthorizePaymentClient;
 import com.techtaste.order_ms.model.Order;
+import com.techtaste.order_ms.producer.UserProducer;
 import com.techtaste.order_ms.repository.OrderRepository;
 
 @Service
@@ -20,10 +22,12 @@ public class OrderService {
     
     private final OrderRepository repository;
     private final AuthorizePaymentClient client;
+    private final UserProducer producer;
 
-    public OrderService(OrderRepository repository, AuthorizePaymentClient client) {
+    public OrderService(OrderRepository repository, AuthorizePaymentClient client, UserProducer producer) {
         this.repository = repository;
         this.client = client;
+        this.producer = producer;
     }
 
     public OrderResponseDTO createOrder(OrderRequestDTO orderDTO, Boolean haveError) {
@@ -41,6 +45,7 @@ public class OrderService {
         }
         order.setStatus(status);
         repository.save(order);
+        producer.sendEmail(new MessageDTO(order.getCpf(), order.getId().toString(), order.getStatus().toString())); 
         return new OrderResponseDTO(
                 order.getId(), 
                 order.getStatus(), 
