@@ -1,0 +1,49 @@
+services:
+  payment-db:
+    container_name: techtaste-paymentdb
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5431:5432"
+    volumes:
+      - payment_data:/var/lib/postgresql/data
+    networks:
+      - techtaste_network
+  order-db:
+    container_name: techtaste-orderdb
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - order_data:/var/lib/postgresql/data
+    networks:
+      - techtaste_network
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: techtaste-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"   # Porta padrão para comunicação AMQP
+      - "15672:15672" # Porta da interface web de gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    networks:
+      - techtaste_network
+
+networks:
+  techtaste_network:
+    driver: bridge
+
+volumes:
+  order_data:
+  payment_data:
