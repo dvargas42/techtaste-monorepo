@@ -8,12 +8,12 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
+        <module>config-server</module>
         <module>service-registry</module>
         <module>api-gateway</module>
         <module>order-ms</module>
         <module>payment-ms</module>
         <module>user-ms</module>
-        <module>config-server</module>
     </modules>
     <properties>
         <java.version>21</java.version>
