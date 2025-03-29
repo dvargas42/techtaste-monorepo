@@ -2,21 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.techtaste</groupId>
         <artifactId>monorepo-microservices</artifactId>
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
     <artifactId>service-registry</artifactId>
     <packaging>jar</packaging>
     <name>service-registry</name>
     <description>Service Registry</description>
-
 	<url>https://github.com/techtaste-monorepo</url>
-
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -24,7 +20,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<developers>
 		<developer>
 			<id>dvargas42</id>
@@ -32,27 +27,27 @@
 			<email>dvargas.eng@gmail.com</email>
 		</developer>
 	</developers>
-
 	<scm>
 		<connection>scm:git:git://github.com/techtaste-monorepo.git</connection>
 		<developerConnection>scm:git:ssh://github.com:techtaste-monorepo.git</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/techtaste-monorepo</url>
 	</scm>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
-
+		<dependency> 
+			<groupId>org.springframework.cloud</groupId> 
+			<artifactId>spring-cloud-starter-config</artifactId> 
+		</dependency> 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -61,5 +56,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
